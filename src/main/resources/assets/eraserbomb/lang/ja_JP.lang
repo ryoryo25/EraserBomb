@@ -1,0 +1,27 @@
+
+//tooltip
+tooltip.eraser_bomb=爆発半径: %d (直径: %d)
+
+//chat
+chat.warning_eraser_bomb1=消去開始...
+chat.warning_eraser_bomb2=消去には時間が掛かったり，ラグが起きたりする可能性があります．
+
+//item
+item.eraser_bomb_0.name=地形消滅爆弾 紅(あかね) Mk-1
+item.eraser_bomb_1.name=地形消滅爆弾 紅(あかね) Mk-2
+item.eraser_bomb_2.name=地形消滅爆弾 紅(あかね) Mk-3
+item.eraser_bomb_3.name=地形消滅爆弾 紅(あかね) Mk-4
+item.eraser_bomb_4.name=地形消滅爆弾 紅(あかね) Mk-5
+item.eraser_bomb_5.name=地形消滅爆弾 紅(あかね) Mk-6
+item.eraser_bomb_6.name=生体殲滅爆弾 蒼(あおい) Mk-1
+item.eraser_bomb_7.name=生体殲滅爆弾 蒼(あおい) Mk-2
+item.eraser_bomb_8.name=生体殲滅爆弾 蒼(あおい) Mk-3
+item.eraser_bomb_9.name=生体殲滅爆弾 蒼(あおい) Mk-4
+item.eraser_bomb_10.name=生体殲滅爆弾 蒼(あおい) Mk-5
+item.eraser_bomb_11.name=生体殲滅爆弾 蒼(あおい) Mk-6
+item.eraser_bomb_12.name=完全消去爆弾 紫(ゆかり) Mk-1
+item.eraser_bomb_13.name=完全消去爆弾 紫(ゆかり) Mk-2
+item.eraser_bomb_14.name=完全消去爆弾 紫(ゆかり) Mk-3
+item.eraser_bomb_15.name=完全消去爆弾 紫(ゆかり) Mk-4
+item.eraser_bomb_16.name=完全消去爆弾 紫(ゆかり) Mk-5
+item.eraser_bomb_17.name=完全消去爆弾 紫(ゆかり) Mk-6

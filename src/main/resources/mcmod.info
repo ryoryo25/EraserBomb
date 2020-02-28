@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "eraserbomb",
+		"name": "EraserBomb",
+		"description": "This mod adds some Eraser Bombs. It erases everything.",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "Nothing",
+		"updateUrl": "Nothing",
+		"authorList": ["ryoryo"],
+		"credits": "takanasayo, and many minecraft modders!",
+		"logoFile": "assets/eraserbomb/textures/mod_logo.png",
+		"screenshots": ["assets/eraserbomb/textures/I-III.png", "assets/eraserbomb/textures/IV.png", "assets/eraserbomb/textures/V.png"],
+		"dependencies": ["mod_MinecraftForge", "polishedlib"]
+	}
+]
