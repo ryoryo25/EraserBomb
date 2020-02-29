@@ -86,14 +86,6 @@ public class EntityEraserBomb extends EntityThrowable
 		int tz = 0;
 		int ty = 0;
 
-//		//ブロックカウント設定がtrueなら
-//		if(ModConfig.isEraseBlockCount)
-//		{
-//			//"START ERASING..."と表示
-//			//EntityThrowable.thrower には、投げたキャラ（EntityLiving）のインスタンスが保持されている。
-//			Utils.addChat((EntityPlayer) getThrower(), TextFormatting.RED + "" + TextFormatting.BOLD + "START ERASING...");
-//		}
-
 		//Warning
 		if(this.bombPower > 30)
 		{
@@ -226,6 +218,7 @@ public class EntityEraserBomb extends EntityThrowable
 		}
 	}
 
+	//unused
 	public void createCircle(BlockPos pos)
 	{
 		int cx = pos.getX();
