@@ -5,8 +5,8 @@ import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ryoryo.eraserbomb.EraserBomb;
 import ryoryo.eraserbomb.util.References;
-import ryoryo.polishedlib.util.Utils;
 
 //@Config(modid = LibMisc.MOD_ID)
 public class ModConfig
@@ -34,7 +34,7 @@ public class ModConfig
 		}
 		catch(Exception e)
 		{
-			Utils.addError("Error loading config.");
+			EraserBomb.logger.addError("Error loading config.");
 		}
 		finally
 		{
