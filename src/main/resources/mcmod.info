@@ -8,7 +8,7 @@
 		"url": "Nothing",
 		"updateUrl": "Nothing",
 		"authorList": ["ryoryo"],
-		"credits": "takanasayo, and many minecraft modders!",
+		"credits": "sayo, and many minecraft modders!",
 		"logoFile": "assets/eraserbomb/textures/mod_logo.png",
 		"screenshots": ["assets/eraserbomb/textures/I-III.png", "assets/eraserbomb/textures/IV.png", "assets/eraserbomb/textures/V.png"],
 		"dependencies": ["mod_MinecraftForge", "polishedlib"]
