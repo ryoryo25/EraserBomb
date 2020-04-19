@@ -21,7 +21,7 @@ public class CommonProxy
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		ModItems.init();
-		Utils.registerModEntity(EntityEraserBomb.class, References.MOD_ID, "eraser_bomb", References.ENTITY_ID_ERASER_BOMB, EraserBomb.INSTANCE, 32, 5, true);
+		EraserBomb.REGISTER.registerModEntity(EntityEraserBomb.class, "eraser_bomb", References.ENTITY_ID_ERASER_BOMB, EraserBomb.INSTANCE, 32, 5, true);
 	}
 
 	public void init(FMLInitializationEvent event)
@@ -49,6 +49,6 @@ public class CommonProxy
 
 	public static void addShapelessRecipe(String name, @Nonnull ItemStack output, Object... params)
 	{
-		Utils.addShapelessRecipe(References.MOD_ID, name, output, params);
+		EraserBomb.REGISTER.addShapelessRecipe(name, output, params);
 	}
 }

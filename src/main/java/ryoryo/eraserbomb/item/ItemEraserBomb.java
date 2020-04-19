@@ -35,12 +35,6 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 		this.setHasSubtypes(true);
 	}
 
-	@Override
-	public String getModId()
-	{
-		return References.MOD_ID;
-	}
-
 	public static int getType(int damage)
 	{
 		return damage / 6 + 1;

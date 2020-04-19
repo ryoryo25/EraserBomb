@@ -1,7 +1,7 @@
 package ryoryo.eraserbomb.item;
 
 import net.minecraft.item.Item;
-import ryoryo.polishedlib.util.Utils;
+import ryoryo.eraserbomb.EraserBomb;
 
 public class ModItems
 {
@@ -9,6 +9,6 @@ public class ModItems
 
 	public static void init()
 	{
-		Utils.registerItem(ITEM_ERASER_BOMB, "eraser_bomb", ItemEraserBomb.size());
+		EraserBomb.REGISTER.registerItem(ITEM_ERASER_BOMB, "eraser_bomb", ItemEraserBomb.size());
 	}
 }
