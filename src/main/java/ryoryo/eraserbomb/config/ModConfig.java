@@ -34,7 +34,7 @@ public class ModConfig
 		}
 		catch(Exception e)
 		{
-			EraserBomb.logger.addError("Error loading config.");
+			EraserBomb.LOGGER.error("Error loading config.");
 		}
 		finally
 		{
