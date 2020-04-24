@@ -60,7 +60,7 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
 	{
 		int power = getPower(stack.getItemDamage());
-		tooltip.add(Utils.translatableStringFormatted(References.TOOLTIP_ERASER_BOMB, powers[power], powers[power] * 2 + 1));
+		tooltip.add(Utils.translatableString(References.TOOLTIP_ERASER_BOMB, powers[power], powers[power] * 2 + 1));
 	}
 
 	@Override

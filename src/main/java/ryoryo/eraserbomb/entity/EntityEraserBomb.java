@@ -89,8 +89,8 @@ public class EntityEraserBomb extends EntityThrowable
 		//Warning
 		if(this.bombPower > 30)
 		{
-			Utils.addChat((EntityPlayer) getThrower(), TextFormatting.RED + "" + TextFormatting.BOLD + Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB1));
-			Utils.addChat((EntityPlayer) getThrower(), Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB2));
+			Utils.sendChat((EntityPlayer) getThrower(), TextFormatting.RED + "" + TextFormatting.BOLD + Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB1));
+			Utils.sendChat((EntityPlayer) getThrower(), Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB2));
 		}
 
 		//ブロック破壊
@@ -129,7 +129,7 @@ public class EntityEraserBomb extends EntityThrowable
 		{
 			//経過時間と破壊ブロック数を表示
 			//EntityThrowable.thrower には、投げたキャラ（EntityLiving）のインスタンスが保持されている。
-			Utils.addChat((EntityPlayer) getThrower(), String.format("Erased %d block(s) : (%1.4f sec)", count, time / 1000000000D));
+			Utils.sendChat((EntityPlayer) getThrower(), String.format("Erased %d block(s) : (%1.4f sec)", count, time / 1000000000D));
 		}
 	}
 
@@ -173,7 +173,7 @@ public class EntityEraserBomb extends EntityThrowable
 		if(ModConfig.isEraseBlockCount)
 		{
 			//モブ消去数を表示
-			Utils.addChat((EntityPlayer) getThrower(), String.format("Killed %d mob(s)", count));
+			Utils.sendChat((EntityPlayer) getThrower(), String.format("Killed %d mob(s)", count));
 		}
 	}
 
