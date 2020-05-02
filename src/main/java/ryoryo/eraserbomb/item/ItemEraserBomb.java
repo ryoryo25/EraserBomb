@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ryoryo.eraserbomb.entity.EntityEraserBomb;
 import ryoryo.eraserbomb.util.References;
 import ryoryo.polishedlib.item.ItemBase;
+import ryoryo.polishedlib.util.RegistryUtils;
 import ryoryo.polishedlib.util.Utils;
 
 public class ItemEraserBomb extends ItemBase implements IItemColor
@@ -122,6 +123,6 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
 	{
-		Utils.registerSubItems(this, size(), tab, items);
+		RegistryUtils.registerSubItems(this, size(), tab, items);
 	}
 }
