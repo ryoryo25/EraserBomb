@@ -18,12 +18,11 @@ import ryoryo.eraserbomb.util.References;
 import ryoryo.polishedlib.util.RegistryUtils;
 
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.MOD_VERSION, dependencies = References.MOD_DEPENDENCIES, acceptedMinecraftVersions = References.MOD_ACCEPTED_MC_VERSIONS, useMetadata = true, guiFactory = References.MOD_GUI_FACTORY)
-public class EraserBomb
-{
+public class EraserBomb {
 	@Instance(References.MOD_ID)
 	public static EraserBomb INSTANCE;
 
-	@SidedProxy(clientSide=References.PROXY_CLIENT, serverSide=References.PROXY_COMMON)
+	@SidedProxy(clientSide = References.PROXY_CLIENT, serverSide = References.PROXY_COMMON)
 	public static CommonProxy proxy;
 
 	public static ModConfig config;
@@ -31,8 +30,7 @@ public class EraserBomb
 	public static final RegistryUtils REGISTER = new RegistryUtils(References.MOD_ID);
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		INSTANCE = this;
 		config = new ModConfig(event.getSuggestedConfigurationFile());
 		MinecraftForge.EVENT_BUS.register(config);
@@ -40,20 +38,17 @@ public class EraserBomb
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
+	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
+	public void loadComplete(FMLLoadCompleteEvent event) {
 		proxy.loadComplete(event);
 	}
 }

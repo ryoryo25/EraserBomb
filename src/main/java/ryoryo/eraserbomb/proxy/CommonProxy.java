@@ -16,18 +16,14 @@ import ryoryo.eraserbomb.util.References;
 import ryoryo.polishedlib.util.Utils;
 import ryoryo.polishedlib.util.enums.EnumColor;
 
-public class CommonProxy
-{
-	public void preInit(FMLPreInitializationEvent event)
-	{
+public class CommonProxy {
+	public void preInit(FMLPreInitializationEvent event) {
 		ModItems.init();
 		EraserBomb.REGISTER.registerModEntity(EntityEraserBomb.class, "eraser_bomb", References.ENTITY_ID_ERASER_BOMB, EraserBomb.INSTANCE, 32, 5, true);
 	}
 
-	public void init(FMLInitializationEvent event)
-	{
-		for(int i = 0; i < 18; i ++)
-		{
+	public void init(FMLInitializationEvent event) {
+		for(int i = 0; i < 18; i++) {
 			if(i == 0)
 				addShapelessRecipe("eraser_bomb_" + i, new ItemStack(ModItems.ITEM_ERASER_BOMB, 1, i), Items.SNOWBALL, EnumColor.RED.getDyeOreName(), Blocks.TNT);
 			else if(Utils.isInAToB(i, 1, 5) || Utils.isInAToB(i, 7, 11))
@@ -39,16 +35,13 @@ public class CommonProxy
 		}
 	}
 
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	public void postInit(FMLPostInitializationEvent event) {
 	}
 
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
+	public void loadComplete(FMLLoadCompleteEvent event) {
 	}
 
-	public static void addShapelessRecipe(String name, @Nonnull ItemStack output, Object... params)
-	{
+	public static void addShapelessRecipe(String name, @Nonnull ItemStack output, Object... params) {
 		EraserBomb.REGISTER.addShapelessRecipe(name, output, params);
 	}
 }

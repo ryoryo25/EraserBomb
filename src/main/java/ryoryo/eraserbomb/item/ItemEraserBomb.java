@@ -24,49 +24,40 @@ import ryoryo.polishedlib.item.ItemBase;
 import ryoryo.polishedlib.util.RegistryUtils;
 import ryoryo.polishedlib.util.Utils;
 
-public class ItemEraserBomb extends ItemBase implements IItemColor
-{
-	public static final int[] powers =
-	{ 3, 7, 15, 31, 63, 127 };
+public class ItemEraserBomb extends ItemBase implements IItemColor {
+	public static final int[] powers = { 3, 7, 15, 31, 63, 127 };
 	public static int types = 3;
 
-	public ItemEraserBomb()
-	{
+	public ItemEraserBomb() {
 		super("eraser_bomb", CreativeTabs.MISC);
 		this.setHasSubtypes(true);
 	}
 
-	public static int getType(int damage)
-	{
+	public static int getType(int damage) {
 		return damage / 6 + 1;
 	}
 
-	public static int getPower(int damage)
-	{
+	public static int getPower(int damage) {
 		return damage % 6;
 	}
 
-	public static int getBombPower(int damage)
-	{
+	public static int getBombPower(int damage) {
 		return powers[getPower(damage)];
 	}
 
-	public static int size()
-	{
+	public static int size() {
 		return powers.length * types;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
-	{
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		int power = getPower(stack.getItemDamage());
 		tooltip.add(Utils.translatableString(References.TOOLTIP_ERASER_BOMB, powers[power], powers[power] * 2 + 1));
 	}
 
 	@Override
-	public int colorMultiplier(ItemStack stack, int tintIndex)
-	{
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
 		int damage = stack.getItemDamage();
 		int type = getType(damage);
 		int power = getPower(damage);
@@ -82,8 +73,7 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-	{
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		int damage = stack.getItemDamage();
@@ -95,16 +85,13 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 
 		world.playSound(player, player.getPosition(), SoundEvents.BLOCK_DISPENSER_LAUNCH, SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-		if(!world.isRemote)
-		{
-			if(player.isSneaking())
-			{
-				//スニークしながら右クリックなら、その場で爆発
+		if(!world.isRemote) {
+			if(player.isSneaking()) {
+				// スニークしながら右クリックなら、その場で爆発
 				new EntityEraserBomb(world, player, stack).onImpact(null);
 			}
-			else
-			{
-				//スニーク無しで右クリックなら、EntityEraserBombをスポーンさせる（投げる）
+			else {
+				// スニーク無しで右クリックなら、EntityEraserBombをスポーンさせる（投げる）
 				world.spawnEntity(new EntityEraserBomb(world, player, stack, 4.5F));
 			}
 		}
@@ -113,16 +100,14 @@ public class ItemEraserBomb extends ItemBase implements IItemColor
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
+	public String getUnlocalizedName(ItemStack itemStack) {
 		int damage = itemStack.getItemDamage();
 		return (0 <= damage && damage < size()) ? String.format("%s_%d", getUnlocalizedName(), damage) : getUnlocalizedName();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-	{
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		RegistryUtils.registerSubItems(this, size(), tab, items);
 	}
 }
