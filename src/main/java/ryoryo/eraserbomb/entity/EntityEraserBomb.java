@@ -164,10 +164,10 @@ public class EntityEraserBomb extends EntityThrowable {
 	@Override
 	public void onImpact(RayTraceResult result) {
 		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-		// BlockPos posp = new BlockPos(getThrower().posX, getThrower().posY,
-		// getThrower().posZ);
+		// BlockPos posp = new BlockPos(getThrower().posX, getThrower().posY, getThrower().posZ);
 		// 爆発音
-		this.world.playSound((EntityPlayer) getThrower(), pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 4.0F, 0.7F);
+		//		this.world.playSound((EntityPlayer) getThrower(), pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 4.0F, 0.7F);
+		this.world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 4.0F, 0.7F);
 
 		// 何かにぶつかったら着弾点で爆発
 		if((bombType & 1) != 0)
