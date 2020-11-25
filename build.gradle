@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-	//compile "com.ryoryo.polishedlib:1.0.0"
+	//compile "com.ryoryo.polishedlib:1.0.2"
 
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..

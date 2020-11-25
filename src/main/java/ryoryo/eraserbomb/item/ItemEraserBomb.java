@@ -89,8 +89,7 @@ public class ItemEraserBomb extends ItemBase implements IItemColor {
 			if(player.isSneaking()) {
 				// スニークしながら右クリックなら、その場で爆発
 				new EntityEraserBomb(world, player, stack).onImpact(null);
-			}
-			else {
+			} else {
 				// スニーク無しで右クリックなら、EntityEraserBombをスポーンさせる（投げる）
 				world.spawnEntity(new EntityEraserBomb(world, player, stack, 4.5F));
 			}
