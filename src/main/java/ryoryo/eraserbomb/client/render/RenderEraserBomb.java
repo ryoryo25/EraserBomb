@@ -15,18 +15,10 @@ public class RenderEraserBomb extends RenderSnowball<EntityEraserBomb> {
 		super(renderManager, item, itemRenderer);
 	}
 
-	// @Override
-	// public void doRender(EntityEraserBomb entity, double x, double y, double
-	// z, float entityYaw, float partialTicks)
-	// {
-	// GlStateManager.color(1.0F, 0.0F, 0.0F, 0.0F);
-	// super.doRender(entity, x, y, z, entityYaw, partialTicks);
-	// }
-
-	// TODO
 	@Override
 	public ItemStack getStackToRender(EntityEraserBomb entity) {
-		return new ItemStack(this.item, 1, entity.getMeta());
+		// DataParameterを介してItemStackをgetしてメタをget
+		return new ItemStack(this.item, 1, entity.getItemStack().getItemDamage());
 	}
 
 	public static class Factory implements IRenderFactory<EntityEraserBomb> {

@@ -10,6 +10,9 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -22,8 +25,6 @@ import ryoryo.eraserbomb.util.References;
 import ryoryo.polishedlib.util.Utils;
 
 public class EntityEraserBomb extends EntityThrowable {
-	// render用
-	private int meta;
 	// 爆弾の種類
 	private int bombType;
 	// 真上投げフラグ
@@ -32,13 +33,20 @@ public class EntityEraserBomb extends EntityThrowable {
 	private int bombPower;
 	// 距離判定用
 	private double range;
+	// EntityItemを参考に，これにItemStackを入れるとサーバー・クライアントで同期される; どうやっているかは知らない
+	private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack> createKey(EntityEraserBomb.class, DataSerializers.ITEM_STACK);
 
+	// クライアント側からはこれが呼ばれるみたい．だから，ただstackからmetaを取ってくるだけじゃダメ
 	public EntityEraserBomb(World world) {
 		super(world);
+		// EMPTYにset
+		this.setItemStack(ItemStack.EMPTY);
 	}
 
 	public EntityEraserBomb(World world, double x, double y, double z) {
 		super(world, x, y, z);
+		// EMPTYにset
+		this.setItemStack(ItemStack.EMPTY);
 	}
 
 	// 爆発力、速度を指定してEntityを生成
@@ -46,13 +54,14 @@ public class EntityEraserBomb extends EntityThrowable {
 		super(world, thrower);
 		this.bombPower = ItemEraserBomb.getBombPower(stack.getItemDamage());
 		this.bombType = ItemEraserBomb.getType(stack.getItemDamage());
-		this.meta = stack.getItemDamage();
 		// 破壊範囲を+0.6Fにして、半径二乗を計算しておく（+0.6Fにするのは円形を綺麗に見せるため）
 		this.range = Math.pow(this.bombPower + 0.6D, 2);
 		// 投げたプレイヤーの向きに飛んでいくように
 		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, speed, 1.0F);
 		// 投げた方向がほぼ真上なら、真上投げフラグをセット
 		this.isVertical = this.motionX < 0.05F && this.motionX > -0.05F && this.motionZ < 0.05F && this.motionZ > -0.05F && this.motionY > 0;
+		// stackにset
+		this.setItemStack(stack);
 	}
 
 	// 爆発力を指定してEntityを生成
@@ -60,8 +69,20 @@ public class EntityEraserBomb extends EntityThrowable {
 		this(world, thrower, stack, 1.5F);
 	}
 
-	public int getMeta() {
-		return this.meta;
+	@Override
+	protected void entityInit() {
+		this.getDataManager().register(ITEM, ItemStack.EMPTY);
+	}
+
+	// これを介してItemStackをget
+	public ItemStack getItemStack() {
+		return (ItemStack) this.getDataManager().get(ITEM);
+	}
+
+	// これを介してItemStackをset
+	public void setItemStack(ItemStack stack) {
+		this.getDataManager().set(ITEM, stack);
+		this.getDataManager().setDirty(ITEM);
 	}
 
 	// 指定座標で爆発を起こす。ブロックだけを破壊する。
@@ -71,45 +92,25 @@ public class EntityEraserBomb extends EntityThrowable {
 		// ブロックは回数カウント用
 		int count = 0;
 
-		int px = pos.getX();
-		int py = pos.getY();
-		int pz = pos.getZ();
-
-		int tx = 0;
-		int tz = 0;
-		int ty = 0;
-
 		// Warning
 		if(this.bombPower > 30) {
 			Utils.sendChat((EntityPlayer) getThrower(), TextFormatting.RED + "" + TextFormatting.BOLD + Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB1));
 			Utils.sendChat((EntityPlayer) getThrower(), Utils.translatableString(References.CHAT_WARNING_ERASER_BOMB2));
 		}
 
-		// ブロック破壊
-		for(int x = -this.bombPower; x <= this.bombPower; ++x) {
-			for(int z = -this.bombPower; z <= this.bombPower; ++z) {
-				for(int y = -this.bombPower; y <= this.bombPower; ++y) {
-					ty = y + py;
-					// 爆発範囲外ならスルー
-					if(ty < 0 || ty > 255 || x * x + y * y + z * z > range)
-						continue;
-					tx = x + px;
-					tz = z + pz;
-					BlockPos posn = new BlockPos(tx, ty, tz);
-					// 空気ブロックならスルー
-					if(this.world.isAirBlock(posn))
-						continue;
-					// 岩盤を判定
-					if(this.world.getBlockState(posn) == Blocks.BEDROCK.getDefaultState() && !ModConfig.eraseBedrock)
-						continue;
-					// ブロックを消滅させ、表示を更新。周囲の情報は更新しない
-					this.world.setBlockState(posn, Blocks.AIR.getDefaultState(), 2);
-					// this.world.setBlockToAir(posn);
-					// this.worldObj.markBlockNeedsUpdate(tx, ty, tz);
-					++count;
-				}
-			}
+		for(BlockPos posIn : Utils.getAllInSphere(pos, this.bombPower, this.range)) {
+			// 空気ブロックならスルー
+			if(this.world.isAirBlock(posIn))
+				continue;
+			// 岩盤を判定
+			if(this.world.getBlockState(posIn) == Blocks.BEDROCK.getDefaultState() && !ModConfig.eraseBedrock)
+				continue;
+			// ブロックを消滅させ、表示を更新。周囲の情報は更新しない
+			this.world.setBlockState(posIn, Blocks.AIR.getDefaultState(), 2);
+
+			count++;
 		}
+
 		// 経過ナノ秒の取得
 		long time = System.nanoTime() - start;
 
@@ -127,9 +128,6 @@ public class EntityEraserBomb extends EntityThrowable {
 		double dy = pos.getY();
 		double dz = pos.getZ();
 
-		// this.worldObj.getEntitiesWithinAABB(classEntity, bb)
-		// AxisAlignedBB aabb = AxisAlignedBB.getBoundingBoxFromPool(dx - r, dy
-		// - r, dz - r, dx + r, dy + r, dz + r);
 		AxisAlignedBB aabb = new AxisAlignedBB(dx, dy, dz, dx, dy, dz).grow(r);
 		return this.world.getEntitiesWithinAABBExcludingEntity(getThrower(), aabb);
 	}
@@ -144,11 +142,11 @@ public class EntityEraserBomb extends EntityThrowable {
 		double dz = pos.getZ();
 
 		// モブ消去
-		List<Entity> entityList = getEntityList(pos, bombPower);
+		List<Entity> entityList = getEntityList(pos, this.bombPower);
 
 		for(int i = 0; i < entityList.size(); ++i) {
 			Entity entity = (Entity) entityList.get(i);
-			if(entity instanceof EntityLiving && entity.getDistance(dx, dy, dz) <= range) {
+			if(entity instanceof EntityLiving && entity.getDistance(dx, dy, dz) <= this.range) {
 				entity.setDead();
 				++count;
 			}
@@ -164,9 +162,7 @@ public class EntityEraserBomb extends EntityThrowable {
 	@Override
 	public void onImpact(RayTraceResult result) {
 		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-		// BlockPos posp = new BlockPos(getThrower().posX, getThrower().posY, getThrower().posZ);
 		// 爆発音
-		//		this.world.playSound((EntityPlayer) getThrower(), pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 4.0F, 0.7F);
 		this.world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 4.0F, 0.7F);
 
 		// 何かにぶつかったら着弾点で爆発
