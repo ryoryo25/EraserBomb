@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,17 +19,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ryoryo.eraserbomb.entity.EntityEraserBomb;
 import ryoryo.eraserbomb.util.References;
-import ryoryo.polishedlib.item.ItemBase;
+import ryoryo.polishedlib.item.ItemBaseMeta;
 import ryoryo.polishedlib.util.RegistryUtils;
 import ryoryo.polishedlib.util.Utils;
+import ryoryo.polishedlib.util.handlers.ModelHandler;
+import ryoryo.polishedlib.util.interfaces.IItemColorProvider;
 
-public class ItemEraserBomb extends ItemBase implements IItemColor {
+public class ItemEraserBomb extends ItemBaseMeta implements IItemColorProvider {
 	public static final int[] powers = { 3, 7, 15, 31, 63, 127 };
 	public static int types = 3;
 
 	public ItemEraserBomb() {
 		super("eraser_bomb", CreativeTabs.MISC);
-		this.setHasSubtypes(true);
 	}
 
 	public static int getType(int damage) {
@@ -57,36 +57,20 @@ public class ItemEraserBomb extends ItemBase implements IItemColor {
 	}
 
 	@Override
-	public int colorMultiplier(ItemStack stack, int tintIndex) {
-		int damage = stack.getItemDamage();
-		int type = getType(damage);
-		int power = getPower(damage);
-		if(type == 1)
-			return 0xffcccc - 0x002222 * power;
-		if(type == 2)
-			return 0xccccff - 0x222200 * power;
-		if(type == 3)
-			return 0xffccff - 0x112200 * power;
-		if(type == 4)
-			return 0xccffcc - 0x220022 * power;
-		return 0xffffff;
-	}
-
-	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		int damage = stack.getItemDamage();
-		if(damage < 0 || damage >= size())
+		if (damage < 0 || damage >= size())
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 
-		if(!Utils.isCreative(player))
+		if (!Utils.isCreative(player))
 			stack.shrink(1);
 
 		world.playSound(player, player.getPosition(), SoundEvents.BLOCK_DISPENSER_LAUNCH, SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-		if(!world.isRemote) {
-			if(player.isSneaking()) {
+		if (!world.isRemote) {
+			if (player.isSneaking()) {
 				// スニークしながら右クリックなら、その場で爆発
 				new EntityEraserBomb(world, player, stack).onImpact(null);
 			} else {
@@ -105,8 +89,30 @@ public class ItemEraserBomb extends ItemBase implements IItemColor {
 	}
 
 	@Override
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
+		int damage = stack.getItemDamage();
+		int type = getType(damage);
+		int power = getPower(damage);
+		if (type == 1)
+			return 0xffcccc - 0x002222 * power;
+		if (type == 2)
+			return 0xccccff - 0x222200 * power;
+		if (type == 3)
+			return 0xffccff - 0x112200 * power;
+		if (type == 4)
+			return 0xccffcc - 0x220022 * power;
+		return 0xffffff;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		RegistryUtils.registerSubItems(this, size(), tab, items);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModels() {
+		ModelHandler.registerItemModel(this, size());
 	}
 }
