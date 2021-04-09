@@ -83,9 +83,9 @@ public class ItemEraserBomb extends ItemBaseMeta implements IItemColorProvider {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack) {
+	public String getUnlocalizedNameImpl(ItemStack itemStack) {
 		int damage = itemStack.getItemDamage();
-		return (0 <= damage && damage < size()) ? String.format("%s_%d", getUnlocalizedName(), damage) : getUnlocalizedName();
+		return (0 <= damage && damage < size()) ? String.format("%s_%d", this.getUnlocalizedName(), damage) : this.getUnlocalizedName();
 	}
 
 	@Override
@@ -106,13 +106,13 @@ public class ItemEraserBomb extends ItemBaseMeta implements IItemColorProvider {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+	public void getSubItemsImpl(CreativeTabs tab, NonNullList<ItemStack> items) {
 		RegistryUtils.registerSubItems(this, size(), tab, items);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerModels() {
+	public void registerModelsImpl() {
 		ModelHandler.registerItemModel(this, size());
 	}
 }
